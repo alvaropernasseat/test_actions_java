@@ -7,6 +7,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - uses: actions/checkout@v2
     - name: Set up JDK 1.8
       uses: actions/setup-java@v1
       with:
@@ -22,12 +23,3 @@ jobs:
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         AWS_DEFAULT_REGION: 'eu-central-1'
 
-    - name: mock file
-      run: echo "THIS IS A TEST PACKAGE" > file.txt
-    - name: Zip file
-      run: zip lambda.zip file.txt
-    - name: Deploy code to Lambda
-    - uses: yvesgurcan/deploy-lambda-function
-      with:
-        package: lambda.zip
-        function-name: TEST-FUNCTION
