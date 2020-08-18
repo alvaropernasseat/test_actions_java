@@ -22,9 +22,12 @@ jobs:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         AWS_DEFAULT_REGION: 'eu-central-1'
-    - name: Deploy code to Lambda
+
+    - name: mock file
       run: echo "THIS IS A TEST PACKAGE" > file.txt
+    - name: Zip file
       run: zip lambda.zip file.txt
+    - name: Deploy code to Lambda
     - uses: yvesgurcan/deploy-lambda-function
       with:
         package: lambda.zip
