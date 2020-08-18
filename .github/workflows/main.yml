@@ -7,60 +7,60 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
-      - name: Set up JDK 1.8
-        uses: actions/setup-java@v1
-        with:
-          java-version: 1.8
-      - name: Build with Gradle
-        run: ./gradlew build
-      - uses: actions/checkout@v2
-      - name: Set up JDK 9.0.4 for x64
-        uses: actions/setup-java@v1
-        with:
-          java-version: '9.0.4'
-          architecture: x64
-      - uses: actions/checkout@v2
-      - uses: actions/setup-java@v1
-        with:
-          java-version: 1.8
-      - name: Run the Gradle package task
-        run: ./gradlew -b ci.gradle package
-      - uses: actions/checkout@v2
-      - name: Set up JDK 1.8
-        uses: actions/setup-java@v1
-        with:
-          java-version: 1.8
-      - name: Cache Gradle packages
-        uses: actions/cache@v2
-        with:
-          path: ~/.gradle/caches
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
-          restore-keys: ${{ runner.os }}-gradle
-      - name: Build with Gradle
-        run: ./gradlew build
-      - uses: actions/checkout@v2
-      - uses: actions/setup-java@v1
-      - run: ./gradlew build
-      - uses: actions/upload-artifact@v2
-        with:
-          name: Package
-          path: build/libs
-      - name: Configure AWS Credentials
-        uses: youyo/awscredswrap@master
-        with:
-          role_arn:  ${{ secrets.AWS_DEV_ROLE_TO_ASSUME }}
-          duration_seconds: 1200
-          role_session_name: dev
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_DEFAULT_REGION: 'eu-central-1'
-      - name: Deploy code to Lambda
-      - uses: actions/checkout@master
-      - run: echo "THIS IS A TEST PACKAGE" > file.txt
-      - run: zip lambda.zip file.txt
-      - uses: yvesgurcan/deploy-lambda-function
-        with:
-          package: lambda.zip
-          function-name: TEST-FUNCTION
+    - uses: actions/checkout@v2
+    - name: Set up JDK 1.8
+      uses: actions/setup-java@v1
+      with:
+        java-version: 1.8
+    - name: Build with Gradle
+      run: ./gradlew build
+    - uses: actions/checkout@v2
+    - name: Set up JDK 9.0.4 for x64
+      uses: actions/setup-java@v1
+      with:
+        java-version: '9.0.4'
+        architecture: x64
+    - uses: actions/checkout@v2
+    - uses: actions/setup-java@v1
+      with:
+        java-version: 1.8
+    - name: Run the Gradle package task
+      run: ./gradlew -b ci.gradle package
+    - uses: actions/checkout@v2
+    - name: Set up JDK 1.8
+      uses: actions/setup-java@v1
+      with:
+        java-version: 1.8
+    - name: Cache Gradle packages
+      uses: actions/cache@v2
+      with:
+        path: ~/.gradle/caches
+        key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
+        restore-keys: ${{ runner.os }}-gradle
+    - name: Build with Gradle
+      run: ./gradlew build
+    - uses: actions/checkout@v2
+    - uses: actions/setup-java@v1
+    - run: ./gradlew build
+    - uses: actions/upload-artifact@v2
+      with:
+        name: Package
+        path: build/libs
+    - name: Configure AWS Credentials
+      uses: youyo/awscredswrap@master
+      with:
+        role_arn:  ${{ secrets.AWS_DEV_ROLE_TO_ASSUME }}
+        duration_seconds: 1200
+        role_session_name: dev
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        AWS_DEFAULT_REGION: 'eu-central-1'
+    - name: Deploy code to Lambda
+    - uses: actions/checkout@master
+    - run: echo "THIS IS A TEST PACKAGE" > file.txt
+    - run: zip lambda.zip file.txt
+    - uses: yvesgurcan/deploy-lambda-function
+      with:
+        package: lambda.zip
+        function-name: TEST-FUNCTION
